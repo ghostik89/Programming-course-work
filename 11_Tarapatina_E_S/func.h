@@ -24,6 +24,6 @@ int	IsRightCallFunc(const char StringOfCode[MAX_LENGTH], func SomeFunc);
 	\param[in]: SourceCode - исходный код
 	\param[in]: func - исходная функция
 	\param[in]: Rows - количество строк в исходном коде
-	\param[out]: InvalidPlace - место ошибки({row} - место ошибки,{-1} - ошибки нет, {-2} - не найдена функция)
+	\return: место ошибки({row} - место ошибки,{-1} - ошибки нет, {-2} - не найдена функция)
 */
-void SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], int InvalidPlace, int Rows);
+int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], int Rows);
