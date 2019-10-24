@@ -8,17 +8,23 @@ struct func {
 	int params;
 };
 
-enum func_prop { RIGHT_CALL = -1, NOT_FOUND = -2, INVALID_CALL = -3};
+//enum func_prop { RIGHT_CALL = -1, NOT_FOUND = -2, INVALID_CALL = -3};
 
-/*!Проверка на правильность вызова функции в строке кода
-*	\param[in]: StringOfCode - строка анализируемого кода
-*	\param[in]: NameOfFunc - функция, которая анализируется
-*	\return: возвращает правильно ли вызвана функция:
-*	RIGHT_CALL - вызова данной функции в строке нету
-*	NOT_FOUND - правильный вызов функции
-*	INVALID_CALL - место неправильного вызова функции
+/*!Поиск объявления функции в исходном коде
+	\param[in]: SourceCode - исходный код
+	\param[in]: func - исходная функция
+	\param[in]: Rows - количество строк в исходном коде
+	\return: {row} - место объявления функции
 */
-int	IsRightCallFunc(const char StringOfCode[MAX_LENGTH], func SomeFunc);
+int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], int Rows);
+
+
+/*!Преобразование объявление функции из строки в структуру func
+	\param[in]: DeclareFunc - объявление функции
+	\param[in|out]: func - контейнер для функции
+*/
+void ExtractFunc(const char DeclareFunc[MAX_LENGTH], func* Func);
+
 
 /*!Проверка на правильность вызова функции в исходном коде
 	\param[in]: SourceCode - исходный код

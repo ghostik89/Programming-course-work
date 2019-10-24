@@ -1,25 +1,40 @@
 #include <cstdio>
+#include "func.h"
 
-const int MAX_LENGTH = 256;
-const int MAX_ROWS = 20;
-
-
-/*! Проверка првильности вызова функции
-*	\param[in]: StringOfCode - строка изучаемого кода
-*	\param[in]: NameOfFunc - имя функции
-*	\return: Правильность вызванной функции
-*	-1 - фукнция в строке не найдена
-*	-2 - функция вызвана правильно
-*	val - место ошибки в функции
-*/
-int	IsRightCallFunc(const char StringOfCode[MAX_LENGTH], const char* NameOfFunc);
-
-
-/*!
+/*!Проверка на правильность вызова функции в исходном коде
 	\param[in]: SourceCode - исходный код
-	\param[out]: InvalidPlace - место с неверными данными {-1, -1} - функция не найдена
+	\param[in]: func - исходная функция
+	\param[in]: Rows - количество строк в исходном коде
+	\return: {row} - место объявления функции
 */
-void SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], int* InvalidPlace);
+int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], int Rows);
+
+
+
+
+
+/*!Проверка на правильность вызова функции в исходном коде
+	\param[in]: SourceCode - исходный код
+	\param[in]: func - исходная функция
+	\param[in]: Rows - количество строк в исходном коде
+	\return: место ошибки({row} - место ошибки,{-1} - ошибки нет, {-2} - не найдена функция)
+*/
+int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], int Rows){
+	//1. Определить место определения функции
+	//	2. Выделить составляющие функции(возвращает / нет значение, количество аргументов)
+	//	3. Поиск первого неверного вызова исходной функции в main() и других фукнциях...
+	//	...Считать, что функция не найдена
+	//	...Считать, что не верных вызово не было
+	//	для каждой строчки кода, пока ненайден неверный вызов
+	//	если происходит вызов исходной функции
+	//	считать, что функция найдена
+	//	проверяем вызов функции с учетом возвращает значение, правильное количество аргументов
+	//	если вызов неверный
+	//	запомнить номер строки с неверным вызовом
+	//	4.вернуть номер строки({ row } -место ошибки, { -1 } -ошибки нет, { -2 } -не найдена функция)
+
+	return 9;
+}
 
 
 int main() {
