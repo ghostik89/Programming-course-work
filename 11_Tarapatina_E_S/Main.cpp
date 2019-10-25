@@ -33,7 +33,7 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 	//	запомнить номер строки с неверным вызовом
 	//	4.вернуть номер строки({ row } -место ошибки, { -1 } -ошибки нет, { -2 } -не найдена функция)
 
-	return 9;
+	return 6;
 }
 
 
