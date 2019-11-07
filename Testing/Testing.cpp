@@ -103,7 +103,6 @@ namespace Testing
 			const int WaitingResult = -1;
 			Assert::AreEqual(result, WaitingResult);
 		}
-	
 		TEST_METHOD(HaveArgs) {
 			const int Rows = 9;
 			const char SourceCode[Rows][MAX_LENGTH] = {
@@ -122,7 +121,6 @@ namespace Testing
 			const int WaitingResult = -1;
 			Assert::AreEqual(result, WaitingResult);
 		}
-
 		TEST_METHOD(HaveArgsNotRight) {
 			const int Rows = 9;
 			const char SourceCode[Rows][MAX_LENGTH] = {
@@ -141,7 +139,6 @@ namespace Testing
 			const int WaitingResult = 7;
 			Assert::AreEqual(result, WaitingResult);
 		}
-
 		TEST_METHOD(InIf) {
 			const int Rows = 13 ;
 			const char SourceCode[Rows][MAX_LENGTH] = {
