@@ -10,6 +10,7 @@ namespace Testing
 	TEST_CLASS(Testing)
 	{
 	public:
+		// ===== Основная функция
 		TEST_METHOD(TypicalTest){
 			const int Rows = 9;
 			const char SourceCode[Rows][MAX_LENGTH] = {
@@ -405,5 +406,6 @@ namespace Testing
 			const int WaitingResult = 6;
 			Assert::AreEqual(result, WaitingResult);
 		}
+	
 	};
 }

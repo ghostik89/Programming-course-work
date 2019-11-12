@@ -21,9 +21,10 @@ int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char Sour
 
 /*!Преобразование объявление функции из строки в структуру func
 	\param[in]: DeclareFunc - объявление функции
+	\param[in]: Sourcefunc - имя функции
 	\return: func - контейнер для функции
 */
-func ExtractFunc(const char DeclareFunc[MAX_LENGTH]);
+func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_LENGTH]);
 
 
 /*!Проверка на правильность вызова функции в исходном коде
