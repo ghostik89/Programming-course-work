@@ -5,9 +5,9 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace Testing
+namespace MainFunc
 {
-	TEST_CLASS(Testing)
+	TEST_CLASS(MainFunc)
 	{
 	public:
 		// ===== Основная функция

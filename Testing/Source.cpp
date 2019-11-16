@@ -25,9 +25,9 @@ namespace FindDeclareTest
 				"}"
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
-			const int WaitingResult = -1;
+			const int WaitingResult = 0;
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			Assert::AreEqual(result, -1);
+			Assert::AreEqual(result, 0);
 		}
 	};
 }

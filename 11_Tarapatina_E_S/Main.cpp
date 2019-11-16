@@ -17,7 +17,7 @@ int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char Sour
 			Bracket--;
 		char* FindingName;
 		FindingName = (char *)strstr(SourceCode[i], SourceFunc);
-		if ((FindingName != NULL || !strcmp(FindingName, SourceCode[i])) && Bracket != 0) {
+		if ((FindingName != NULL || !strcmp(FindingName, SourceCode[i])) && Bracket == 0) {
 			char* LBracket = (char *)strchr(SourceCode[i], '(');
 			char* RBracket = (char*)strchr(SourceCode[i], ')');
 			if (LBracket != NULL && RBracket != NULL)
