@@ -27,7 +27,7 @@ namespace FindDeclareTest
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			const int WaitingResult = 0;
 			int result = FindDeclareFunc(SourceCode, NameOfFunc, Rows);
-			Assert::AreEqual(result, 0);
+			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(HaveArgsInbrackets) {
 			const int Rows = 9;

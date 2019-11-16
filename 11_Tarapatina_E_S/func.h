@@ -1,4 +1,5 @@
 #pragma once
+#include <cstring>
 const int MAX_LENGTH = 256;
 const int MAX_ROWS = 20;
 
@@ -6,7 +7,17 @@ struct func {
 	char func_name[MAX_LENGTH]; //имя функции
 	bool some_return; //
 	int params;
+
+	 bool operator==(func current) const {
+		if (!strcmp(current.func_name, func_name) && params == current.params && (!some_return && !current.some_return ||
+			some_return && current.some_return))
+			return true;
+		else
+			return false;
+	}
 };
+
+
 
 //enum func_prop { RIGHT_CALL = -1, NOT_FOUND = -2, INVALID_CALL = -3};
 

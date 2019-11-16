@@ -32,13 +32,11 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 
 	func TargetFunc;
 
-	char* type = (char*)strchr(DeclareFunc, ' ');
-	int len = type - DeclareFunc + 1;
-	strncpy(type, DeclareFunc, len);
-	if (!strcmp(type, "void"))
-		TargetFunc.some_return = false;
-	else
+	char* type = (char*)strstr(DeclareFunc, "void");
+	if (type == NULL)
 		TargetFunc.some_return = true;
+	else
+		TargetFunc.some_return = false;
 
 	strcpy_s(TargetFunc.func_name, Sourcefunc);
 
