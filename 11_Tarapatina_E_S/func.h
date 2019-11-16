@@ -15,6 +15,17 @@ struct func {
 		else
 			return false;
 	}
+	func& operator=(const func& right) {
+		 //проверка на самоприсваивание
+		 if (this == &right) {
+			 return *this;
+		 }
+		 strcpy(this->func_name, func_name);
+		 this->some_return = some_return;
+		 this->params = params;
+
+		 return *this;
+	 }
 };
 
 
