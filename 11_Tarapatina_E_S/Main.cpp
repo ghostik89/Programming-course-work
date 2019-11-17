@@ -96,8 +96,3 @@ int main() {
 
 	return 0;
 }
-
-func ExtractFunc(const char DeclareFunc[MAX_LENGTH])
-{
-	return func();
-}
