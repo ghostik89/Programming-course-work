@@ -53,42 +53,66 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 	}
 	TargetFunc.params = Args;
 
+
 	return TargetFunc;
 }
 
 
 int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], const int Rows){
-	//1. Определить место определения функции
+	
+	//Определить место определения функции
 	int DeclareRow = 0;
 	DeclareRow = FindDeclareFunc(SourceCode, SourceFunc, Rows);
-	//	2. Выделить составляющие функции(возвращает / нет значение, количество аргументов)
-	func TargetFunc;
-	TargetFunc = ExtractFunc(SourceCode[DeclareRow], SourceFunc);
-	//	3. Поиск первого неверного вызова исходной функции в main() и других фукнциях...
-	//	...Считать, что функция не найдена
-	bool FoundFunc = false;
-	//	...Считать, что не верных вызово не было
-	bool ErrorCall = false;
+	
+	//Выделить составляющие функции(возвращает / нет значение, количество аргументов)
+	func TargetFunc = ExtractFunc(SourceCode[DeclareRow], SourceFunc);
+	
+	//Поиск первого неверного вызова исходной функции в main() и других фукнциях...
+	
+	
+	bool FoundFunc = false;//Считать, что функция не найдена
 	int ErrorRow = -2;
-	//	для каждой строчки кода, пока не найден неверный вызов
+
+	bool ErrorCall = false;//Считать, что не верных вызово не было
+	
 	int Brackets = 0;
-	for (int i = 0; i < Rows && !ErrorCall; i++) {
+	for (int i = 0; i < Rows && !ErrorCall; i++) {//	для каждой строчки кода, пока не найден неверный вызов
 		if (!strcmp(SourceCode[i], "{"))
 			Brackets++;
 		if (!strcmp(SourceCode[i], "}"))
 			Brackets--;
 		//	если происходит вызов исходной функции
-		if (strstr(TargetFunc.func_name, SourceFunc) != NULL && Brackets > 0) {
-			//	считать, что функция найдена
-			FoundFunc = true;
+		if (strstr(SourceCode[i], TargetFunc.func_name) != NULL && Brackets > 0) {
+			
+			FoundFunc = true;//	считать, что функция найдена
 			//	проверяем вызов функции с учетом возвращает значение, правильное количество аргументов
-			//	если вызов неверный
-			//	запомнить номер строки с неверным вызовом
+			if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return) {//	если вызов неверный(возвращаемое значение)
+				ErrorCall = true;
+				ErrorRow = i + 1;//	запомнить номер строки с неверным вызовом
+			}
+			char* LBracket = (char*)strchr(SourceCode[i], '(');
+			char* RBracket = (char*)strchr(SourceCode[i], ')');
+			int Args;
+
+			Args = 0;
+			if (strcmp(LBracket + 1, RBracket) && !ErrorCall) {
+				Args++;
+				for (int i = 0; strcmp(LBracket + i, RBracket); i++)
+					if (LBracket[i] == ',')
+						Args++;
+				
+			}
+			if (Args != TargetFunc.params) {//	если вызов неверный(количество аргументов)
+					ErrorCall = true;
+					ErrorRow = i + 1;//	запомнить номер строки с неверным вызовом
+			}
 		}
 	}
-	//	4.вернуть номер строки({ row } -место ошибки, { -1 } -ошибки нет, { -2 } -не найдена функция)
 
-	return 6;
+	if (!ErrorCall && FoundFunc)
+		ErrorRow = -1;
+
+	return ErrorRow;//вернуть номер строки({ row } -место ошибки, { -1 } -ошибки нет, { -2 } -не найдена функция)
 }
 
 

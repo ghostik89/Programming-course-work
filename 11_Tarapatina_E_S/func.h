@@ -1,5 +1,7 @@
 #pragma once
+#pragma warning(suppress : 4996)
 #include <cstring>
+
 const int MAX_LENGTH = 256;
 const int MAX_ROWS = 20;
 
