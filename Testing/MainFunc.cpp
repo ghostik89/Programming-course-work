@@ -453,26 +453,30 @@ namespace MainFunc
 			Assert::AreEqual(result, WaitingResult);
 		}
 
-		TEST_METHOD(FormatedCode) {
-			const int Rows = 13;
+		TEST_METHOD(InSwitchCase) {
+			const int Rows = 17;
 			const char SourceCode[Rows][MAX_LENGTH] = {
 				"void count()",
 				"{",
-				"	int a = 0;",
+				"int a = 0;",
 				"}",
 				"int main()",
 				"{",
-				"	int i = 0;",
-				"   for(i; i < 23; i++)",
-				"   {",
-				"		count(-2);",
-				"	}",
-				"	return 0;",
+				"int a = 0;",
+				"switch (a)",
+				"{",
+				"case 0:",
+				"a = count();",
+				"break;",
+				"default:",
+				"a++;",
+				"}",
+				"return 0;",
 				"}"
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 10;
+			const int WaitingResult = 11;
 			Assert::AreEqual(result, WaitingResult);
 		}
 
