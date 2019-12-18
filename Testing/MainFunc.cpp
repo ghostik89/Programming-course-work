@@ -406,6 +406,75 @@ namespace MainFunc
 			const int WaitingResult = 5;
 			Assert::AreEqual(result, WaitingResult);
 		}
-	
+
+		TEST_METHOD(UsingInUsersFunc) {
+			const int Rows = 13;
+			const char SourceCode[Rows][MAX_LENGTH] = {
+				"void count()",
+				"{",
+				"int a = 0;",
+				"}",
+				"void minus()",
+				"{",
+				"count(10);",
+				"}",
+				"int main()",
+				"{",
+				"int i = 0;",
+				"return 0;",
+				"}"
+			};
+			const char NameOfFunc[MAX_LENGTH] = { "count" };
+			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
+			const int WaitingResult = 7;
+			Assert::AreEqual(result, WaitingResult);
+		}
+
+		TEST_METHOD(FormatedCode) {
+			const int Rows = 13;
+			const char SourceCode[Rows][MAX_LENGTH] = {
+				"void count()",
+				"{",
+				"	int a = 0;",
+				"}",
+				"int main()",
+				"{",
+				"	int i = 0;",
+				"   for(i; i < 23; i++)",
+				"   {",
+				"		count(-2);",
+				"	}",
+				"	return 0;",
+				"}"
+			};
+			const char NameOfFunc[MAX_LENGTH] = { "count" };
+			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
+			const int WaitingResult = 10;
+			Assert::AreEqual(result, WaitingResult);
+		}
+
+		TEST_METHOD(FormatedCode) {
+			const int Rows = 13;
+			const char SourceCode[Rows][MAX_LENGTH] = {
+				"void count()",
+				"{",
+				"	int a = 0;",
+				"}",
+				"int main()",
+				"{",
+				"	int i = 0;",
+				"   for(i; i < 23; i++)",
+				"   {",
+				"		count(-2);",
+				"	}",
+				"	return 0;",
+				"}"
+			};
+			const char NameOfFunc[MAX_LENGTH] = { "count" };
+			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
+			const int WaitingResult = 10;
+			Assert::AreEqual(result, WaitingResult);
+		}
+
 	};
 }
