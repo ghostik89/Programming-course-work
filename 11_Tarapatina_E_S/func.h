@@ -31,9 +31,6 @@ struct func {
 };
 
 
-
-//enum func_prop { RIGHT_CALL = -1, NOT_FOUND = -2, INVALID_CALL = -3};
-
 /*!Поиск объявления функции в исходном коде
 	\param[in]: SourceCode - исходный код
 	\param[in]: func - исходная функция
@@ -58,3 +55,15 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 	\return: место ошибки({row} - место ошибки,{-1} - ошибки нет, {-2} - не найдена функция)
 */
 int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], int Rows);
+
+/*!Подсчет количества аргументов в функции
+	\param[in]: StringOfCode - строка кода, в которой подсчитываются аргументы
+	\return: количество аргументов в функции
+*/
+int CountArgs(const char StringOfCode[MAX_LENGTH]);
+
+/*!
+	\param[in]: StringOfCode - строка кода, в которой подсчитываются аргументы
+	\param[in|out]: BraketsCounter - 
+*/
+void InFuncCount(const char StringOfCode[MAX_LENGTH], int* BraketsCounter);

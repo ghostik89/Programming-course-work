@@ -1,0 +1,14 @@
+//добавить еще ошибок, которые были реализованны до реализации побочных и главных функций
+
+1. Файл Main.cpp строка 105
+				if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return && CountArgs(SourceCode[i]) != TargetFunc.params) {//	если вызов неверный(возвращаемое значение)
+Логическая ошибка, т.к.в фукнции может быть не правильное возвращаемое значение ИЛИ количество аргументов
+Решение.
+if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return ||CountArgs(SourceCode[i]) != TargetFunc.params) {//	если вызов неверный(возвращаемое значение)
+2. Не учитываются отступы при поиске скобочек
+исходный ошибочный код
+if (!strcmp(StringOfCode, "{"))
+		BraketsCounter++;
+	if (!strcmp(StringOfCode, "}"))
+		BraketsCounter--;
+Исправленный код
