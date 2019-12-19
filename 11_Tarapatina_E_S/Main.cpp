@@ -1,20 +1,27 @@
 #include <cstdio>
 #include "func.h"
 #include <cstring>
+#include <cctype>  
 
 
 int CountArgs(const char StringOfCode[MAX_LENGTH]){
 	char* LBracket = (char*)strchr(StringOfCode, '(');
 	char* RBracket = (char*)strchr(StringOfCode, ')');
-	int Args;
+	int Args , Spaces;
 
 	Args = 0;
+	Spaces = 0;
 	if (strcmp(LBracket + 1, RBracket)) {
 		Args++;
-		for (int i = 0; strcmp(LBracket + i, RBracket); i++)
+		for (int i = 0; strcmp(LBracket + i, RBracket); i++) {
 			if (LBracket[i] == ',')
 				Args++;
+			if (isspace(LBracket[i]))
+				Spaces++;
+		}
 	}
+	if (Spaces == strlen(LBracket) - 2 || (strchr(StringOfCode,';') != NULL && Spaces == strlen(LBracket) - 3))
+		Args = 0;
 
 	return Args;
 }
@@ -34,16 +41,14 @@ int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char Sour
 	Bracket = 0;
 	DeclareCloumn = -1; //изначально считаем, что объ€вление не найдено
 	for (int i = 0; i < Rows && DeclareCloumn == -1; i++) {
-		/*if (!strcmp(SourceCode[i], "{"))
-			Bracket++;
-		if (!strcmp(SourceCode[i], "}"))
-			Bracket--;*/
+
 		InFuncCount(SourceCode[i], Bracket);
 		char* FindingName;
 		FindingName = (char *)strstr(SourceCode[i], SourceFunc);
 		if (FindingName != NULL && Bracket == 0) {
 			char* LBracket = (char *)strchr(SourceCode[i], '(');
 			char* RBracket = (char*)strchr(SourceCode[i], ')');
+		
 			if (LBracket != NULL && RBracket != NULL)
 				DeclareCloumn = i;
 		}
@@ -64,17 +69,6 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 
 	strcpy_s(TargetFunc.func_name, Sourcefunc);
 
-	/*char* LBracket = (char*)strchr(DeclareFunc, '(');
-	char* RBracket = (char*)strchr(DeclareFunc, ')');
-	int Args;
-
-	Args = 0;
-	if (strcmp(LBracket + 1, RBracket)) {
-		Args++;
-		for (int i = 0; strcmp(LBracket + i, RBracket); i++)
-			if (LBracket[i] == ',')
-				Args++;
-	}*/
 	TargetFunc.params = CountArgs(DeclareFunc);
 
 
@@ -98,10 +92,7 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 	
 	int Brackets = 0;
 	for (int i = 0; i < Rows && !ErrorCall; i++) {//	дл€ каждой строчки кода, пока не найден неверный вызов
-		/*if (!strcmp(SourceCode[i], "{"))
-			Brackets++;
-		if (!strcmp(SourceCode[i], "}"))
-			Brackets--;*/
+
 		InFuncCount(SourceCode[i], Brackets);
 		//	если происходит вызов исходной функции
 		if (strstr(SourceCode[i], TargetFunc.func_name) != NULL && Brackets > 0) {
@@ -112,22 +103,6 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 				ErrorCall = true;
 				ErrorRow = i + 1;//	запомнить номер строки с неверным вызовом
 			}
-			/*char* LBracket = (char*)strchr(SourceCode[i], '(');
-			char* RBracket = (char*)strchr(SourceCode[i], ')');
-			int Args;
-
-			Args = 0;
-			if (strcmp(LBracket + 1, RBracket) && !ErrorCall) {
-				Args++;
-				for (int i = 0; strcmp(LBracket + i, RBracket); i++)
-					if (LBracket[i] == ',')
-						Args++;
-				
-			}*/
-			//if (CountArgs(SourceCode[i]) != TargetFunc.params) {//	если вызов неверный(количество аргументов)
-			//		ErrorCall = true;
-			//		ErrorRow = i + 1;//	запомнить номер строки с неверным вызовом
-			//}
 		}
 	}
 
@@ -139,6 +114,31 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 
 
 int main() {
+	//исходные данные
+	char SourceCode[MAX_ROWS][MAX_LENGTH];
+	char SourceFunc[MAX_LENGTH];
+	int Rows;
+
+	//считывание исходных данных
+	scanf("%s\n", &SourceFunc);
+	scanf("%d\n", &Rows);
+
+	for (int i = 0; i < Rows; i++)
+		gets_s(SourceCode[i]);
+
+	int ErrorRow = SearchInvalidFuncCall(SourceCode, SourceFunc, Rows);//поиск неверного вызова функции в строке
+
+	//обработка результата работы функции SearchInvalidFuncCall
+	switch (ErrorRow) {
+	case -1:
+		printf("valid function call\n");
+		break;
+	case -2:
+		printf("no function call\n");
+		break;
+	default:
+		printf("%d\n", ErrorRow);
+	}
 
 	return 0;
 }
