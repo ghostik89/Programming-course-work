@@ -9,21 +9,24 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]){
 	char* RBracket = (char*)strchr(StringOfCode, ')');
 	int Args , Spaces;
 
-	Args = 0;
-	Spaces = 0;
-	if (strcmp(LBracket + 1, RBracket)) {
-		Args++;
-		for (int i = 0; strcmp(LBracket + i, RBracket); i++) {
-			if (LBracket[i] == ',')
-				Args++;
-			if (isspace(LBracket[i]))
-				Spaces++;
+	Args = 1;//Изначально считаем, что функция имеет один аргумент
+	Spaces = 0;//Изначально считаем, что между круглыми скобками нет белых разделителей
+	
+	//1.Подсчет аргументов
+	if (strcmp(LBracket + 1, RBracket)) {//если между скобок есть пространство
+		//Args++;
+		for (int i = 0; strcmp(LBracket + i, RBracket); i++) {//для каждого символа между скобок
+			if (LBracket[i] == ',')//если текущий символ - запятая...
+				Args++;//...то увеличить количество аргументов
+			if (isspace(LBracket[i]))//если текущий символ - белый разделитель...
+				Spaces++;//... то увеличить счетчик разделителей
 		}
 	}
+	//если  пространство между скобками нет или полностью состоит их белых разделителей...
 	if (Spaces == strlen(LBracket) - 2 || (strchr(StringOfCode,';') != NULL && Spaces == strlen(LBracket) - 3))
-		Args = 0;
+		Args = 0;//...то обнулить счетчик аргументов
 
-	return Args;
+	return Args;//2. Вернуть количество аргументов
 }
 
 void InFuncCount(const char StringOfCode[MAX_LENGTH], int& BraketsCounter){
@@ -38,22 +41,22 @@ int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char Sour
 	int DeclareCloumn; //там, где объявляется фукнция
 	int Bracket;	   //вспомогательная переменная, чтобы не искать объявление фукнции в теле другой функции
 
-	Bracket = 0;
+	Bracket = 0;		//Изначально считать, что мы не в теле функции
 	DeclareCloumn = -1; //изначально считаем, что объявление не найдено
-	for (int i = 0; i < Rows && DeclareCloumn == -1; i++) {
+	//Поиск заголовка или объявления функции в коде
+	for (int i = 0; i < Rows && DeclareCloumn == -1; i++) {//для каждой строкчки исходного кода
 
 		InFuncCount(SourceCode[i], Bracket);
 		char* FindingName;
 		FindingName = (char *)strstr(SourceCode[i], SourceFunc);
-		if (FindingName != NULL && Bracket == 0) {
-			char* LBracket = (char *)strchr(SourceCode[i], '(');
-			char* RBracket = (char*)strchr(SourceCode[i], ')');
-		
-			if (LBracket != NULL && RBracket != NULL)
-				DeclareCloumn = i;
-		}
+		char* LBracket = (char*)strchr(SourceCode[i], '(');
+		char* RBracket = (char*)strchr(SourceCode[i], ')');
+
+
+		if (FindingName != NULL && Bracket == 0 && LBracket != NULL && RBracket != NULL)//если мы не внутри функции и в строке есть имя искомой функции и есть пара круглых скобочек
+			DeclareCloumn = i;//запомнить номер строки
 	}
-	return DeclareCloumn;
+	return DeclareCloumn;//Вернуть номер строки
 }
 
 
@@ -61,18 +64,19 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 
 	func TargetFunc;
 
+	//Определяем тип функции
 	char* type = (char*)strstr(DeclareFunc, "void");
-	if (type == NULL)
-		TargetFunc.some_return = true;
-	else
-		TargetFunc.some_return = false;
+	if (type == NULL)//если тип возвращаемого значения не void...
+		TargetFunc.some_return = true;//... то функция возращает значение
+	else//...инче
+		TargetFunc.some_return = false;//...не возвращаает значение
 
-	strcpy_s(TargetFunc.func_name, Sourcefunc);
+	strcpy_s(TargetFunc.func_name, Sourcefunc);//Скопировать имя функции
 
-	TargetFunc.params = CountArgs(DeclareFunc);
+	TargetFunc.params = CountArgs(DeclareFunc);//Посчитать количество аргументов
 
 
-	return TargetFunc;
+	return TargetFunc;//Вернуть контейнер функции
 }
 
 
@@ -123,6 +127,11 @@ int main() {
 	scanf("%s\n", &SourceFunc);
 	scanf("%d\n", &Rows);
 
+	if (Rows < 1 || Rows > 21) {
+		printf("invalid value\n");
+		return 0;
+	}
+
 	for (int i = 0; i < Rows; i++)
 		gets_s(SourceCode[i]);
 
@@ -137,7 +146,7 @@ int main() {
 		printf("no function call\n");
 		break;
 	default:
-		printf("%d\n", ErrorRow);
+		printf("%d", ErrorRow);
 	}
 
 	return 0;

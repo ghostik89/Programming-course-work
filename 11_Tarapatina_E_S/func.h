@@ -64,6 +64,6 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]);
 
 /*!
 	\param[in]: StringOfCode - строка кода, в которой подсчитываются аргументы
-	\param[in|out]: BraketsCounter - 
+	\param[in|out]: BraketsCounter - счетчик фигурных скобок
 */
 void InFuncCount(const char StringOfCode[MAX_LENGTH], int* BraketsCounter);
