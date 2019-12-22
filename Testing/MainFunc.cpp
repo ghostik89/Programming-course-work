@@ -518,5 +518,24 @@ namespace MainFunc
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
 			Assert::AreEqual(result, -2);
 		}
+		TEST_METHOD(FuncCallTwiceInOneLine) {
+			const int Rows = 10;
+			const char SourceCode[Rows][MAX_LENGTH] = {
+				"int count()",
+				"{",
+				"return 1;",
+				"}",
+				"int main()",
+				"{",
+				"int a;",
+				"a = count() + count(1);",
+				"return 0;",
+				"}"
+			};
+			const char NameOfFunc[MAX_LENGTH] = { "count" };
+			const int WaitingResult = -2;
+			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
+			Assert::AreEqual(result, 8);
+		}
 	};
 }
