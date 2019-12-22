@@ -11,9 +11,9 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]){
 
 	Args = 1;//Изначально считаем, что функция имеет один аргумент
 	Spaces = 0;//Изначально считаем, что между круглыми скобками нет белых разделителей
-	
+
 	//1.Подсчет аргументов
-	if (strcmp(LBracket + 1, RBracket)) {//если между скобок есть пространство
+	if (LBracket != NULL && strcmp(LBracket + 1, RBracket)) {//если между скобок есть пространство
 		//Args++;
 		for (int i = 0; strcmp(LBracket + i, RBracket); i++) {//для каждого символа между скобок
 			if (LBracket[i] == ',')//если текущий символ - запятая...
@@ -23,8 +23,10 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]){
 		}
 	}
 	//если  пространство между скобками нет или полностью состоит их белых разделителей...
-	if (Spaces == strlen(LBracket) - 2 || (strchr(StringOfCode,';') != NULL && Spaces == strlen(LBracket) - 3))
+	if (LBracket != NULL && (Spaces == strlen(LBracket) - 2 || (strchr(StringOfCode,';') != NULL && Spaces == strlen(LBracket) - 3)))
 		Args = 0;//...то обнулить счетчик аргументов
+
+	if (LBracket == NULL) Args = -1;
 
 	return Args;//2. Вернуть количество аргументов
 }
@@ -106,6 +108,11 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 			if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return || CountArgs(SourceCode[i]) != TargetFunc.params) {//	если вызов неверный(возвращаемое значение)
 				ErrorCall = true;
 				ErrorRow = i + 1;//	запомнить номер строки с неверным вызовом
+				if (CountArgs(SourceCode[i]) == -1) {
+					ErrorCall = false;
+					ErrorRow = -2;//	запомнить номер строки с неверным вызовом
+					FoundFunc = false;//	считать, что функция найдена
+				}
 			}
 		}
 	}
