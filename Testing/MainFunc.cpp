@@ -44,7 +44,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 7;
+			const int WaitingResult = 6;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(TypicalTestNotFound) {
@@ -137,7 +137,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 7;
+			const int WaitingResult = 6;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(InIf) {
@@ -181,7 +181,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 10;
+			const int WaitingResult = 9;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(InWhile) {
@@ -204,7 +204,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 11;
+			const int WaitingResult = 10;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(InDoWhile) {
@@ -252,7 +252,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 14;
+			const int WaitingResult = 13;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(DeclareTwoFunc) {
@@ -275,7 +275,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 12;
+			const int WaitingResult = 11;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(UseTwoFunc) {
@@ -299,7 +299,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 13;
+			const int WaitingResult = 12;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(UseOneFunc) {
@@ -342,7 +342,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 9;
+			const int WaitingResult = 8;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(ErrorMoreOne) {
@@ -362,7 +362,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 8;
+			const int WaitingResult = 7;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(Recurse) {
@@ -382,7 +382,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 4;
+			const int WaitingResult = 3;
 			Assert::AreEqual(result, WaitingResult);
 		}
 		TEST_METHOD(DeclareAfterMain) {
@@ -403,7 +403,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 5;
+			const int WaitingResult = 4;
 			Assert::AreEqual(result, WaitingResult);
 		}
 
@@ -426,7 +426,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 7;
+			const int WaitingResult = 6;
 			Assert::AreEqual(result, WaitingResult);
 		}
 
@@ -449,7 +449,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 10;
+			const int WaitingResult = 9;
 			Assert::AreEqual(result, WaitingResult);
 		}
 
@@ -476,7 +476,7 @@ namespace MainFunc
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			const int WaitingResult = 11;
+			const int WaitingResult = 10;
 			Assert::AreEqual(result, WaitingResult);
 		}
 
@@ -521,21 +521,21 @@ namespace MainFunc
 		TEST_METHOD(FuncCallTwiceInOneLine) {
 			const int Rows = 10;
 			const char SourceCode[Rows][MAX_LENGTH] = {
-				"int count()",
+				"int count(int a, int b)",
 				"{",
 				"return 1;",
 				"}",
 				"int main()",
 				"{",
 				"int a;",
-				"a = count() + count(1);",
+				"a = count(4,5) + count(1);",
 				"return 0;",
 				"}"
 			};
 			const char NameOfFunc[MAX_LENGTH] = { "count" };
-			const int WaitingResult = -2;
+			const int WaitingResult = 7;
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
-			Assert::AreEqual(result, 8);
+			Assert::AreEqual(result, WaitingResult);
 		}
 	};
 }

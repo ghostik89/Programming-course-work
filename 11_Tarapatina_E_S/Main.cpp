@@ -101,18 +101,20 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 
 		InFuncCount(SourceCode[i], Brackets);
 		//	если происходит вызов исходной функции
-		if (strstr(SourceCode[i], TargetFunc.func_name) != NULL && Brackets > 0) {
+		char* FuncCall; int Shift = 0;
+		strcpy(FuncCall, strstr(SourceCode[i], TargetFunc.func_name));
+		if (FuncCall != NULL && strstr(SourceCode[i], TargetFunc.func_name) != NULL && Brackets > 0) {
 			
 			FoundFunc = true;//	считать, что функция найдена
 			//	проверяем вызов функции с учетом возвращает значение, правильное количество аргументов
 			if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return || CountArgs(SourceCode[i]) != TargetFunc.params) {//	если вызов неверный(возвращаемое значение)
 				ErrorCall = true;
-				ErrorRow = i + 1;//	запомнить номер строки с неверным вызовом
+				ErrorRow = i;//	запомнить номер строки с неверным вызовом
 				if (CountArgs(SourceCode[i]) == -1) {
 					ErrorCall = false;
 					ErrorRow = -2;//	запомнить номер строки с неверным вызовом
 					FoundFunc = false;//	считать, что функция найдена
-				}
+				} 
 			}
 		}
 	}
