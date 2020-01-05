@@ -6,7 +6,7 @@
 
 int CountArgs(const char StringOfCode[MAX_LENGTH]){
 	char* LBracket = (char*)strchr(StringOfCode, '(');
-	char* RBracket = (char*)strchr(StringOfCode, ')');
+	char* RBracket = (char*)strrchr(StringOfCode, ')');
 	int Args , Spaces;
 
 	Args = 1;//Изначально считаем, что функция имеет один аргумент
@@ -15,8 +15,8 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]){
 	//1.Подсчет аргументов
 	if (LBracket != NULL && strcmp(LBracket + 1, RBracket)) {//если между скобок есть пространство
 		//Args++;
-		for (int i = 0; strcmp(LBracket + i, RBracket); i++) {//для каждого символа между скобок
-			if (LBracket[i] == ',')//если текущий символ - запятая...
+		for (int i = 1; strcmp(LBracket + i, RBracket); i++) {//для каждого символа между скобок
+			if (LBracket[i] == ',' || LBracket[i] == '(')//если текущий символ - запятая...
 				Args++;//...то увеличить количество аргументов
 			if (isspace(LBracket[i]))//если текущий символ - белый разделитель...
 				Spaces++;//... то увеличить счетчик разделителей
@@ -82,6 +82,17 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 }
 
 
+int HowManyCalls(const char StringOfCode[MAX_LENGTH], const char SourceFunc[MAX_LENGTH]) {
+	int count = 0;
+	const char* tmp = StringOfCode;
+	while (tmp = strstr(tmp, SourceFunc))
+	{
+		count++;
+		tmp++;
+	}
+	return count;
+}
+
 int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], const int Rows){
 	
 	//Определить место определения функции
@@ -101,13 +112,11 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 
 		InFuncCount(SourceCode[i], Brackets);
 		//	если происходит вызов исходной функции
-		char* FuncCall; int Shift = 0;
-		strcpy(FuncCall, strstr(SourceCode[i], TargetFunc.func_name));
-		if (FuncCall != NULL && strstr(SourceCode[i], TargetFunc.func_name) != NULL && Brackets > 0) {
-			
+		if (strstr(SourceCode[i], TargetFunc.func_name) != NULL && Brackets > 0) {
+			int calls = HowManyCalls(SourceCode[i], TargetFunc.func_name);
 			FoundFunc = true;//	считать, что функция найдена
 			//	проверяем вызов функции с учетом возвращает значение, правильное количество аргументов
-			if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return || CountArgs(SourceCode[i]) != TargetFunc.params) {//	если вызов неверный(возвращаемое значение)
+			if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return || CountArgs(SourceCode[i])*calls != TargetFunc.params * calls) {//	если вызов неверный(возвращаемое значение)
 				ErrorCall = true;
 				ErrorRow = i;//	запомнить номер строки с неверным вызовом
 				if (CountArgs(SourceCode[i]) == -1) {

@@ -62,8 +62,15 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 */
 int CountArgs(const char StringOfCode[MAX_LENGTH]);
 
-/*!
+/*!Индикатор нахождения внутри тела фукнции
 	\param[in]: StringOfCode - строка кода, в которой подсчитываются аргументы
 	\param[in|out]: BraketsCounter - счетчик фигурных скобок
 */
 void InFuncCount(const char StringOfCode[MAX_LENGTH], int* BraketsCounter);
+
+/*!Подсчет количество вхождений в функции
+	\param[in]: StringOfCode - строка, в которой производится вызов функции
+	\param[in]: SourceFunc - исходная фукнция
+	\return: количество вызовов исходной фукнции
+*/
+int HowManyCalls(const char StringOfCode[MAX_LENGTH], const char SourceFunc[MAX_LENGTH]);
