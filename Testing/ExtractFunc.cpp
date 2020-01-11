@@ -30,7 +30,7 @@ namespace ExtractFuncTest
 		TEST_METHOD(HaveOneArg) {
 			const char Declarefunc[MAX_LENGTH] = "void count(int some)";
 			const char NameOfFunc[MAX_LENGTH] = "count";
-			const func WaitingResult = { "count", false,1 };
+			const func WaitingResult = { "count", false, 1 };
 			func result = ExtractFunc(Declarefunc, NameOfFunc);
 			Assert::IsTrue(result == WaitingResult);
 		}
