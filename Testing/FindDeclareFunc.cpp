@@ -96,6 +96,7 @@ namespace FindDeclareTest
 			int result = FindDeclareFunc(SourceCode, NameOfFunc, Rows);
 			Assert::AreEqual(result, WaitingResult);
 		}
+		
 		TEST_METHOD(VariableNameIsFuncName) {
 			const int Rows = 9;
 			const char SourceCode[Rows][MAX_LENGTH] = {

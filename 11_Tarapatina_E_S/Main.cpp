@@ -14,7 +14,6 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]){
 
 	//1.Подсчет аргументов
 	if (LBracket != NULL && strcmp(LBracket + 1, RBracket)) {//если между скобок есть пространство
-		//Args++;
 		for (int i = 1; strcmp(LBracket + i, RBracket); i++) {//для каждого символа между скобок
 			if (LBracket[i] == ',' || LBracket[i] == '(')//если текущий символ - запятая...
 				Args++;//...то увеличить количество аргументов
@@ -26,16 +25,18 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]){
 	if (LBracket != NULL && (Spaces == strlen(LBracket) - 2 || (strchr(StringOfCode,';') != NULL && Spaces == strlen(LBracket) - 3)))
 		Args = 0;//...то обнулить счетчик аргументов
 
-	if (LBracket == NULL) Args = -1;
+	if (LBracket == NULL) Args = -1; //если в строка кода - объявление переменной, то количество аргументов равно -1
 
 	return Args;//2. Вернуть количество аргументов
 }
 
 void InFuncCount(const char StringOfCode[MAX_LENGTH], int& BraketsCounter){
-	if (strstr(StringOfCode, "{") != NULL)
-		BraketsCounter++;
-	if (strstr(StringOfCode, "}") != NULL)
-		BraketsCounter--;
+	//Изначально считаем что в строке одновременно не может быть и {, и }
+	//1. Изменяем счетчик фигурных скобок в зависимости от найденной скобки
+	if (strstr(StringOfCode, "{") != NULL)//если в строке найдена { ...
+		BraketsCounter++;//...то увеличить счетчик фигурных скобок
+	if (strstr(StringOfCode, "}") != NULL)//если в строке найдена }...
+		BraketsCounter--;//...то уменьшаем счетчик фигурных скобок
 }
 
 int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], const int Rows) {
@@ -50,7 +51,7 @@ int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char Sour
 
 		InFuncCount(SourceCode[i], Bracket);
 		char* FindingName;
-		FindingName = (char *)strstr(SourceCode[i], SourceFunc);
+		FindingName = (char*)strstr(SourceCode[i], SourceFunc);
 		char* LBracket = (char*)strchr(SourceCode[i], '(');
 		char* RBracket = (char*)strchr(SourceCode[i], ')');
 
@@ -83,14 +84,15 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 
 
 int HowManyCalls(const char StringOfCode[MAX_LENGTH], const char SourceFunc[MAX_LENGTH]) {
-	int count = 0;
-	const char* tmp = StringOfCode;
-	while (tmp = strstr(tmp, SourceFunc))
+	int Calls = 0;//Изначально считаем, что вызовов фукции не было
+	const char* NameOfFunc = StringOfCode;
+	//	1. Ищем количество вызовов функции
+	while (NameOfFunc = strstr(NameOfFunc, SourceFunc))//Пока существует вхождение функции в строку
 	{
-		count++;
-		tmp++;
+		Calls++;//увеличиваем счетчик и ищем следующее вхождение
+		NameOfFunc++;
 	}
-	return count;
+	return Calls;//2.Вернуть количество вызовов функции
 }
 
 int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char SourceFunc[MAX_LENGTH], const int Rows){

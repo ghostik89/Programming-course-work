@@ -17,7 +17,7 @@ struct func {
 		else
 			return false;
 	}
-	func& operator=(const func& right) {
+	 func& operator=(const func& right) {
 		 //проверка на самоприсваивание
 		 if (this == &right) {
 			 return *this;
