@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="CountArgs.cpp" />
     <ClCompile Include="ExtractFunc.cpp" />
+    <ClCompile Include="HowManyCalls.cpp" />
     <ClCompile Include="InFuncCount.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
