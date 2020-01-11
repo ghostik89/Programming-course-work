@@ -121,8 +121,9 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 				ErrorRow = i;//	запомнить номер строки с неверным вызовом
 				if (CountArgs(SourceCode[i]) == -1) {
 					ErrorCall = false;
-					ErrorRow = -2;//	запомнить номер строки с неверным вызовом
-					FoundFunc = false;//	считать, что функция найдена
+					//	считать, что функция не найдена
+					ErrorRow = -2;
+					FoundFunc = false;
 				} 
 			}
 		}
