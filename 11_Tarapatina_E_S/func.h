@@ -74,3 +74,5 @@ void InFuncCount(const char StringOfCode[MAX_LENGTH], int& BraketsCounter);
 	\return: количество вызовов исходной фукнции
 */
 int HowManyCalls(const char StringOfCode[MAX_LENGTH], const char SourceFunc[MAX_LENGTH]);
+
+//bool isFullMatchingName(const char functionName[MAX_LENGTH], const char stringOfCode[MAX_LENGTH]);

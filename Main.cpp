@@ -52,8 +52,34 @@ int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char Sour
 	for (int i = 0; i < Rows && DeclareCloumn == -1; i++) {//для каждой строкчки исходного кода
 
 		InFuncCount(SourceCode[i], Bracket);
-		char* FindingName;
-		FindingName = (char*)strstr(SourceCode[i], SourceFunc);
+
+
+
+
+		bool isMatch = false;
+
+		char BlanksName[MAX_LENGTH] = "\0";
+		strcat(BlanksName, " ");//тк имя в прототипе всегда имеет blank space перед собой 
+		strcat(BlanksName, SourceFunc);
+
+		char* nameStartIndex = (char*)strstr(SourceCode[i], BlanksName);
+		//Если имя функции с blank space присутствует в строке...
+		if (nameStartIndex != NULL) {
+			int backIndex = (nameStartIndex - SourceCode[i] + strlen(BlanksName));
+			int frontIndex = (nameStartIndex - SourceCode[i]);
+			//Если после имени функции стоит blank space или '('...
+			if ((SourceCode[i][backIndex] == ' ' || SourceCode[i][backIndex] == '(') &&
+				(frontIndex != 0 && (SourceCode[i][frontIndex] == '+' || SourceCode[i][frontIndex] == '-' || SourceCode[i][frontIndex] == '*' || SourceCode[i][frontIndex] == '/' || SourceCode[i][frontIndex] == ' ')))
+				isMatch = true;//...имя функции полностью совпадает
+		}
+
+
+
+
+
+		char* FindingName = NULL;
+		if(isMatch == true)
+			FindingName = (char*)strstr(SourceCode[i], SourceFunc);
 		char* LBracket = (char*)strchr(SourceCode[i], '(');
 		char* RBracket = (char*)strchr(SourceCode[i], ')');
 
@@ -63,7 +89,6 @@ int FindDeclareFunc(const char SourceCode[MAX_ROWS][MAX_LENGTH], const char Sour
 	}
 	return DeclareCloumn;//Вернуть номер строки
 }
-
 
 func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_LENGTH]) {
 
@@ -84,7 +109,6 @@ func ExtractFunc(const char DeclareFunc[MAX_LENGTH], const char Sourcefunc[MAX_L
 	return TargetFunc;//Вернуть контейнер функции
 }
 
-
 int HowManyCalls(const char StringOfCode[MAX_LENGTH], const char SourceFunc[MAX_LENGTH]) {
 	int Calls = 0;//Изначально считаем, что вызовов фукции не было
 	const char* NameOfFunc = StringOfCode;
@@ -102,20 +126,16 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 	//Определить место определения функции
 	int DeclareRow = 0;
 	DeclareRow = FindDeclareFunc(SourceCode, SourceFunc, Rows);
-	func TargetFunc;
-	bool ErrorCall = false;//Считать, что не верных вызово не было
-
+	
 	//Выделить составляющие функции(возвращает / нет значение, количество аргументов)
-	if (DeclareRow != -1)
-		TargetFunc = ExtractFunc(SourceCode[DeclareRow], SourceFunc);
-	else
-		ErrorCall = true;
+	func TargetFunc = ExtractFunc(SourceCode[DeclareRow], SourceFunc);
+	
 	//Поиск первого неверного вызова исходной функции в main() и других фукнциях...
 	bool FoundFunc = false;//Считать, что функция не найдена
 	int ErrorRow = -2;
+	bool ErrorCall = false;//Считать, что не верных вызово не было
 	
 	int Brackets = 0;
-	if(DeclareRow == -1)
 	for (int i = 0; i < Rows && !ErrorCall; i++) {//	для каждой строчки кода, пока не найден неверный вызов
 
 		InFuncCount(SourceCode[i], Brackets);

@@ -1,0 +1,18 @@
+bool isFullMatchingName(const char functionName[MAX_LENGTH], const char stringOfCode[MAX_LENGTH]) {
+	bool isMatch = false;
+
+	char BlanksName[MAX_LENGTH] = "\0";
+	strcat(BlanksName, " ");//тк имя в прототипе всегда имеет blank space перед собой 
+	strcat(BlanksName, functionName);
+
+	char* nameStartIndex = (char*)strstr(stringOfCode, BlanksName);
+	//Если имя функции с blank space присутствует в строке...
+	if (nameStartIndex != NULL) {
+		int index = (nameStartIndex - stringOfCode + strlen(BlanksName));
+		//Если после имени функции стоит blank space или '('...
+		if (stringOfCode[index] == ' ' || stringOfCode[index] == '(' || stringOfCode[index] == '+' || stringOfCode[index] == '*' || stringOfCode[index] == '-' || stringOfCode[index] == '=' || stringOfCode[index] == '\')
+			isMatch = true;//...имя функции полностью совпадает
+	}
+
+	return isMatch;
+}
