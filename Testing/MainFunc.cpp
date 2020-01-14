@@ -29,6 +29,27 @@ namespace MainFunc
 			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
 			Assert::AreEqual(result, -1);
 		}
+
+		TEST_METHOD(InCondition) {
+			const int Rows = 10;
+			const char SourceCode[Rows][MAX_LENGTH] = {
+				"int punk();",
+				"int main()",
+				"{",
+				"int a = punk() + 10;",
+				"return 0;",
+				"}",
+				"int punk()",
+				"{",
+				"return 5;",
+				"}"
+			};
+			const char NameOfFunc[MAX_LENGTH] = { "punk" };
+			const int WaitingResult = -1;
+			int result = SearchInvalidFuncCall(SourceCode, NameOfFunc, Rows);
+			Assert::AreEqual(result, WaitingResult);
+		}
+
 		TEST_METHOD(TypicalTestNotRightCall) {
 			const int Rows = 11;
 			const char SourceCode[Rows][MAX_LENGTH] = {
@@ -50,9 +71,9 @@ namespace MainFunc
 		TEST_METHOD(TypicalTestNotFound) {
 			const int Rows = 10;
 			const char SourceCode[Rows][MAX_LENGTH] = {
-				"void count()",
+				"int count()",
 				"{",
-				"int a = 0;",
+				"int a =  0;",
 				"}",
 				"int main()",
 				"{",

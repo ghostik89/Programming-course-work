@@ -21,6 +21,8 @@ int CountArgs(const char StringOfCode[MAX_LENGTH]){
 				Spaces++;//... то увеличить счетчик разделителей
 		}
 	}
+	else
+		Args = 0;
 	//если  пространство между скобками нет или полностью состоит их белых разделителей...
 	if (LBracket != NULL && (Spaces == strlen(LBracket) - 2 || (strchr(StringOfCode,';') != NULL && Spaces == strlen(LBracket) - 3)))
 		Args = 0;//...то обнулить счетчик аргументов
@@ -118,7 +120,7 @@ int SearchInvalidFuncCall(const char SourceCode[MAX_ROWS][MAX_LENGTH], const cha
 			int calls = HowManyCalls(SourceCode[i], TargetFunc.func_name);
 			FoundFunc = true;//	считать, что функция найдена
 			//	проверяем вызов функции с учетом возвращает значение, правильное количество аргументов
-			if (strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return || CountArgs(SourceCode[i])*calls != TargetFunc.params * calls) {//	если вызов неверный(возвращаемое значение)
+			if ((strchr(SourceCode[i], '=') != NULL && !TargetFunc.some_return) || CountArgs(SourceCode[i])*calls != TargetFunc.params * calls) {//	если вызов неверный(возвращаемое значение)
 				ErrorCall = true;
 				ErrorRow = i;//	запомнить номер строки с неверным вызовом
 				if (CountArgs(SourceCode[i]) == -1) {
