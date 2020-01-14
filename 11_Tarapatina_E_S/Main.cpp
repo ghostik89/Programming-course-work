@@ -148,8 +148,8 @@ int main() {
 	scanf("%s\n", &SourceFunc);
 	scanf("%d\n", &Rows);
 
-	if (Rows < 1 || Rows > 21) {
-		printf("invalid value\n");
+	if (Rows < 1 || Rows > 20) {
+		printf("invalid input data\n");
 		return 0;
 	}
 
